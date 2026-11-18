@@ -824,25 +824,6 @@ footer::before{content:"";position:absolute;left:50%;bottom:-260px;width:900px;h
               </td>
             </tr>
 
-            <tr>
-              <td class="pimg">
-                <a class="pthumb" href="https://app.notion.com/p/418fb666c59281e5aebde69b2d2e3031" target="_blank" rel="noopener" aria-label="IronLog 노션 페이지 열기">
-                  <img src="img/ironlog.jpg" alt="IronLog 표지" width="1280" height="720" loading="lazy"><span class="pno">04</span>
-                </a>
-              </td>
-              <td class="pmain" data-label="프로젝트">
-                <b>IronLog</b><small>아이언로그</small>
-                <p>운동 기록에 영양소·기초대사량·알림을 더한 셀프호스팅 트래커 (오픈소스 openGym 기반)</p>
-                <div class="stack"><i>React 19</i><i>Vite</i><i>Zustand</i><i>Node 22</i><i>Web Push</i><i>WebAuthn</i><i>PWA</i><i>Vitest</i><i>Docker Compose</i><i>nginx</i></div>
-              </td>
-              <td data-label="기간 · 팀"><span class="when">2026.11.10 ~ 11.14</span><span class="team">5일 · 1인</span></td>
-              <td data-label="내 역할">기획·설계·구현·검증 전 과정 <span class="sub">영양·칼로리, 기초대사량 범위, 푸시 알림 3종, 근육 탐색</span></td>
-              <td class="plinks" data-label="링크">
-                <a class="lk" href="https://app.notion.com/p/418fb666c59281e5aebde69b2d2e3031" target="_blank" rel="noopener">Notion</a>
-                <button class="lk demo" type="button" data-demo="ironlog">시연 영상</button>
-              </td>
-            </tr>
-
           </tbody>
         </table>
       </div>
@@ -882,8 +863,7 @@ footer::before{content:"";position:absolute;left:50%;bottom:-260px;width:900px;h
 var DEMOS = {
   "white-eyes": "videos/white-eyes.mp4",
   "obsidian-shield": "videos/obsidian-shield.mp4",
-  "sajang-helper": "videos/sajang-helper.mp4",
-  "ironlog": ""
+  "sajang-helper": "videos/sajang-helper.mp4"
 };
 </script>
 
@@ -1096,7 +1076,7 @@ var DEMOS = {
   if(!rows.length){ board.style.display="none"; return; }
   var reduce=window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   var canHover=window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches;
-  var GLOW={"white-eyes":"rgba(66,110,255,.34)","obsidian-shield":"rgba(130,90,255,.36)","sajang-helper":"rgba(255,150,60,.34)","ironlog":"rgba(235,80,80,.32)"};
+  var GLOW={"white-eyes":"rgba(66,110,255,.34)","obsidian-shield":"rgba(130,90,255,.36)","sajang-helper":"rgba(255,150,60,.34)"};
 
   function esc(t){ return String(t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
   function ytId(u){ var m=u.match(/(?:youtu\.be\/|[?&]v=|\/embed\/|\/shorts\/)([\w-]{11})/); return m?m[1]:null; }
