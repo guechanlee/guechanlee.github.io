@@ -586,6 +586,92 @@ footer::before{content:"";position:absolute;left:50%;bottom:-260px;width:900px;h
 }
 @media (prefers-reduced-motion: reduce){body::after{animation:none}}
 @media print{body::after,#cur{display:none}.marq{transform:none}nav .wrap{background:none;border:0}}
+
+/* ===== 3D 프로젝트 보드 ===== */
+@property --gc{syntax:"<color>";inherits:true;initial-value:rgba(42,79,224,.30)}
+.board{display:none;position:relative;margin:0 0 40px;overflow-x:clip}
+.js .board{display:block}
+.board .glow{position:absolute;left:50%;top:6%;width:86%;height:72%;transform:translateX(-50%);z-index:0;pointer-events:none;
+  background:radial-gradient(closest-side,var(--gc),transparent 72%);filter:blur(34px);opacity:.9;transition:--gc .9s var(--ease)}
+.board .stage{position:relative;z-index:1;--cw:min(640px,72vw);height:calc(var(--cw)*.5625 + 56px);
+  perspective:1500px;perspective-origin:50% 40%;outline:none;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.board .stage::after{content:"";position:absolute;left:50%;bottom:4px;width:calc(var(--cw)*.78);height:28px;transform:translateX(-50%);
+  background:radial-gradient(closest-side,rgba(0,0,0,.30),transparent);filter:blur(7px);pointer-events:none}
+.board .stage:focus-visible{outline:2px solid var(--accent);outline-offset:6px;border-radius:18px}
+.bcard{position:absolute;left:50%;top:24px;width:var(--cw);aspect-ratio:16/9;margin-left:calc(var(--cw)/-2);
+  border-radius:18px;background:#000;border:1px solid var(--line-2);cursor:pointer;
+  box-shadow:var(--shadow-lg);transform-style:preserve-3d;backface-visibility:hidden;
+  transition:transform .8s cubic-bezier(.22,1.18,.36,1),opacity .5s var(--ease),filter .6s var(--ease),box-shadow .5s var(--ease);will-change:transform}
+.bcard.active{cursor:pointer;box-shadow:0 30px 60px -24px rgba(0,0,0,.55),0 0 0 1px var(--line-2)}
+.bcard .bin{position:absolute;inset:0;border-radius:inherit;overflow:hidden;
+  transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .18s linear}
+/* 영상 위에 3D 기울임이 걸리면 일부 브라우저에서 영상이 반쯤 안 그려진다. 영상이 있을 때는 기울임을 끈다 */
+.bcard.pv .bin,.bcard.full .bin{transform:none!important;transition:none}
+.bcard img,.bcard video{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;border:0;pointer-events:none}
+.bcard iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.bcard video.bvid{opacity:0;transition:opacity .45s var(--ease)}
+.bcard video.bvid.on{opacity:1}
+.bcard.full video{pointer-events:auto}
+.bcard .bno{position:absolute;left:14px;top:12px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:#fff;
+  background:rgba(8,9,12,.55);padding:3px 10px;border-radius:999px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.bcard .bshade{position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.55));pointer-events:none}
+.bcard .bname{position:absolute;left:18px;bottom:14px;right:90px;color:#fff;font-weight:700;font-size:clamp(15px,2.4vw,22px);
+  letter-spacing:-.01em;text-shadow:0 1px 12px rgba(0,0,0,.5);pointer-events:none}
+.bcard .bplay{position:absolute;right:16px;bottom:14px;height:40px;padding:0 16px 0 12px;border-radius:999px;border:0;cursor:pointer;
+  background:#fff;color:#15161a;font:inherit;font-size:14px;font-weight:650;display:inline-flex;align-items:center;gap:8px;
+  box-shadow:0 6px 20px -6px rgba(0,0,0,.5);transition:transform .2s var(--ease),background .2s}
+.bcard .bplay::before{content:"";border-left:9px solid currentColor;border-top:6px solid transparent;border-bottom:6px solid transparent}
+.bcard .bplay:hover{transform:translateY(-1px);background:var(--accent);color:#fff}
+.bcard .bsoon{position:absolute;right:16px;bottom:16px;font-size:12.5px;color:#fff;background:rgba(8,9,12,.6);
+  border:1px dashed rgba(255,255,255,.4);padding:5px 12px;border-radius:999px}
+.bcard .bhint{position:absolute;right:14px;top:12px;font-size:12px;color:#fff;background:rgba(8,9,12,.6);padding:4px 12px;border-radius:999px;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transform:translateY(-4px);transition:opacity .3s,transform .3s;pointer-events:none}
+.bcard.pv .bhint{opacity:1;transform:none}
+.bcard .shine{position:absolute;inset:-10% -30%;pointer-events:none;opacity:0;
+  background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.55) 50%,transparent 62%)}
+.bcard.arrive .shine{animation:bshine .95s .18s var(--ease)}
+.bcard.arrive{animation:bpulse .9s var(--ease)}
+@keyframes bshine{0%{opacity:0;transform:translateX(-70%)}15%{opacity:1}100%{opacity:0;transform:translateX(70%)}}
+@keyframes bpulse{0%{box-shadow:0 0 0 0 var(--gc),0 30px 60px -24px rgba(0,0,0,.55)}100%{box-shadow:0 0 0 22px transparent,0 30px 60px -24px rgba(0,0,0,.55)}}
+.bcard:not(.active) .bplay,.bcard:not(.active) .bsoon,.bcard:not(.active) .bhint{display:none}
+.bcard.pv .bname,.bcard.pv .bshade,.bcard.pv .bplay,.bcard.full .bplay,.bcard.full .bno,.bcard.full .bshade,.bcard.full .bname,.bcard.full .bsoon,.bcard.full .bhint{display:none}
+.bctrl{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:18px;margin:8px 0 22px}
+.bctrl button.nav{width:42px;height:42px;border-radius:999px;border:1px solid var(--line-2);background:var(--card);color:var(--text);
+  cursor:pointer;font-size:18px;line-height:1;box-shadow:var(--shadow);transition:transform .2s var(--ease),border-color .2s,color .2s}
+.bctrl button.nav:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+.bctrl button.nav:active{transform:scale(.92)}
+.bdots{display:flex;gap:8px}
+.bdots button{width:9px;height:9px;padding:0;border-radius:999px;border:0;background:var(--line-2);cursor:pointer;transition:width .4s cubic-bezier(.22,1.18,.36,1),background .3s}
+.bdots button[aria-current="true"]{width:28px;background:var(--accent)}
+.binfo{position:relative;z-index:1;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 30px;box-shadow:var(--shadow);
+  display:grid;grid-template-columns:1.25fr 1fr;gap:10px 40px}
+.binfo h3{margin:0;font-size:24px;line-height:1.3;letter-spacing:-.01em}
+.binfo h3 small{display:block;font-size:13.5px;font-weight:500;color:var(--faint);margin-top:2px;letter-spacing:0}
+.binfo .bdesc{margin:10px 0 14px;color:var(--muted);font-size:15.5px}
+.binfo .stack{display:flex;flex-wrap:wrap;gap:6px}
+.binfo dl{margin:0;display:grid;grid-template-columns:70px 1fr;gap:8px 14px;font-size:14.5px;align-content:start}
+.binfo dt{color:var(--faint);font-family:var(--mono);font-size:12px;letter-spacing:.06em;padding-top:3px}
+.binfo dd{margin:0}
+.binfo dd .sub{display:block;color:var(--muted);font-size:13px}
+.binfo .blinks{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.binfo .blinks .lk{display:inline-flex;align-items:center;justify-content:center;width:auto;flex:0 0 auto;margin:0;height:38px;padding:0 18px}
+.binfo.enter h3,.binfo.enter .bdesc,.binfo.enter dl,.binfo.enter .blinks{animation:brise .7s var(--ease) both}
+.binfo.enter .bdesc{animation-delay:.06s}
+.binfo.enter dl{animation-delay:.1s}
+.binfo.enter .blinks{animation-delay:.2s}
+.binfo.enter .stack i{animation:bpop .55s cubic-bezier(.22,1.3,.36,1) both;animation-delay:calc(.12s + var(--k,0)*.045s)}
+.binfo.enter .blinks .lk{animation:bpop .55s cubic-bezier(.22,1.3,.36,1) both;animation-delay:calc(.25s + var(--k,0)*.07s)}
+@keyframes brise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes bpop{from{opacity:0;transform:translateY(10px) scale(.86)}to{opacity:1;transform:none}}
+@media (max-width:760px){
+  .board .stage{--cw:76vw}
+  .binfo{grid-template-columns:1fr;padding:20px}
+}
+@media (prefers-reduced-motion: reduce){
+  .bcard,.bcard .bin,.board .glow{transition:none}
+  .bcard.arrive,.bcard.arrive .shine,.binfo.enter *{animation:none!important}
+}
+@media print{.board{display:none!important}}
 </style>
 </head>
 <body>
@@ -661,6 +747,16 @@ footer::before{content:"";position:absolute;left:50%;bottom:-260px;width:900px;h
 
     <section id="projects" class="wide">
       <div class="sec-head rv"><span class="no">03</span><h2>Projects</h2></div>
+      <div class="board rv" id="board" role="region" aria-roledescription="carousel" aria-label="프로젝트 3D 보드">
+        <div class="stage" id="stage" tabindex="0" aria-label="프로젝트 카드. 좌우 방향키로 넘깁니다"></div>
+        <div class="bctrl">
+          <button type="button" class="nav" id="bprev" aria-label="이전 프로젝트">‹</button>
+          <div class="bdots" id="bdots"></div>
+          <button type="button" class="nav" id="bnext" aria-label="다음 프로젝트">›</button>
+        </div>
+        <div class="binfo" id="binfo" aria-live="polite"></div>
+      </div>
+
       <div class="ptable-wrap rv">
         <table class="ptable">
           <thead>
@@ -989,6 +1085,160 @@ var DEMOS = {
     if (!run){ run = true; requestAnimationFrame(loop); }
   }, {passive:true});
   document.addEventListener("pointerleave", function(){ cur.classList.remove("on"); });
+})();
+</script>
+<script>
+/* 3D 프로젝트 보드: 아래 표(.ptable)의 내용을 읽어 카드·정보를 만든다. 정보는 표만 고치면 된다. */
+(function(){
+  var board=document.getElementById("board"); if(!board) return;
+  var stage=document.getElementById("stage"), dots=document.getElementById("bdots"), info=document.getElementById("binfo");
+  var rows=[].slice.call(document.querySelectorAll(".ptable tbody tr"));
+  if(!rows.length){ board.style.display="none"; return; }
+  var reduce=window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var canHover=window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches;
+  var GLOW={"white-eyes":"rgba(66,110,255,.34)","obsidian-shield":"rgba(130,90,255,.36)","sajang-helper":"rgba(255,150,60,.34)","ironlog":"rgba(235,80,80,.32)"};
+
+  function esc(t){ return String(t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+  function ytId(u){ var m=u.match(/(?:youtu\.be\/|[?&]v=|\/embed\/|\/shorts\/)([\w-]{11})/); return m?m[1]:null; }
+
+  var glow=document.createElement("div"); glow.className="glow"; board.insertBefore(glow,board.firstChild);
+
+  var items=rows.map(function(tr,i){
+    var img=tr.querySelector(".pthumb img"), role=tr.querySelector('[data-label="내 역할"]');
+    var demoBtn=tr.querySelector(".lk.demo");
+    return {
+      key: demoBtn?demoBtn.getAttribute("data-demo"):"p"+i,
+      img: img?img.getAttribute("src"):"", alt: img?img.getAttribute("alt"):"",
+      name: tr.querySelector(".pmain b").textContent,
+      sub: (tr.querySelector(".pmain small")||{}).textContent||"",
+      desc: tr.querySelector(".pmain p").textContent,
+      stack: [].map.call(tr.querySelectorAll(".pmain .stack i"),function(e){return e.textContent;}),
+      when: (tr.querySelector(".when")||{}).textContent||"", team:(tr.querySelector(".team")||{}).textContent||"",
+      role: role?role.innerHTML:"",
+      links: [].map.call(tr.querySelectorAll(".plinks a"),function(a){return {href:a.href,text:a.textContent};})
+    };
+  });
+  function demoUrl(it){ return ((window.DEMOS||{})[it.key]||"").trim(); }
+  function isFile(u){ return u && !ytId(u); }
+
+  var cur=0, cards=[], hoverTimer=null;
+  items.forEach(function(it,i){
+    var c=document.createElement("div"); c.className="bcard"; c.setAttribute("role","group");
+    c.setAttribute("aria-label",(i+1)+" / "+items.length+" "+it.name);
+    c.innerHTML='<div class="bin"><img src="'+esc(it.img)+'" alt="'+esc(it.alt)+'" draggable="false">'
+      +'<span class="bshade"></span><span class="bno">'+String(i+1).padStart(2,"0")+'</span><span class="bname">'+esc(it.name)+'</span>'
+      +'<span class="bhint">미리보기 · 클릭하면 소리 켜기</span>'
+      +(demoUrl(it)?'<button type="button" class="bplay">시연 영상 재생</button>':'<span class="bsoon">영상 준비 중</span>')
+      +'<span class="shine"></span></div>';
+    c.addEventListener("click",function(){
+      if(i!==cur){ go(i); return; }
+      var v=c.querySelector("video.bvid");               // 미리보기 중이면 클릭으로 소리 켜기/끄기
+      if(v && c.classList.contains("pv")){ v.muted=!v.muted; c.querySelector(".bhint").textContent=v.muted?"미리보기 · 클릭하면 소리 켜기":"소리 켜짐 · 다시 클릭하면 끔"; }
+    });
+    var pb=c.querySelector(".bplay"); if(pb) pb.addEventListener("click",function(e){ e.stopPropagation(); play(i); });
+    c.addEventListener("pointerenter",function(e){ if(e.pointerType==="mouse") schedulePreview(i); });
+    c.addEventListener("pointermove",function(e){ if(e.pointerType==="mouse"){ tilt(c,e); if(i===cur) schedulePreview(i); } });
+    c.addEventListener("pointerleave",function(){ clearTimeout(hoverTimer); untilt(c); if(c.classList.contains("pv")) stopVideo(c); });
+    stage.appendChild(c); cards.push(c);
+    var d=document.createElement("button"); d.type="button"; d.setAttribute("aria-label",it.name+" 보기");
+    d.addEventListener("click",function(){ go(i); }); dots.appendChild(d);
+  });
+
+  function tilt(c,e){
+    if(reduce || !c.classList.contains("active") || c.querySelector("video,iframe")) return;
+    var r=c.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5, bin=c.querySelector(".bin");
+    bin.style.setProperty("--ry",(x*9).toFixed(2)+"deg"); bin.style.setProperty("--rx",(-y*7).toFixed(2)+"deg");
+  }
+  function untilt(c){ var bin=c.querySelector(".bin"); bin.style.setProperty("--ry","0deg"); bin.style.setProperty("--rx","0deg"); }
+
+  function stopVideo(c){
+    var m=c.querySelector("video,iframe"); if(m) m.remove();
+    c.classList.remove("pv","full");
+    var h=c.querySelector(".bhint"); if(h) h.textContent="미리보기 · 클릭하면 소리 켜기";
+  }
+  function schedulePreview(i){
+    if(!canHover || i!==cur) return;
+    var c=cards[i]; if(c.querySelector("video,iframe")) return;
+    clearTimeout(hoverTimer); hoverTimer=setTimeout(function(){ preview(i); },110);
+  }
+  function preview(i){
+    var it=items[i], c=cards[i], url=demoUrl(it);
+    if(i!==cur || !isFile(url) || c.querySelector("video,iframe")) return;
+    var v=document.createElement("video"); v.className="bvid"; v.src=url; v.muted=true; v.loop=true; v.playsInline=true; v.autoplay=true; v.preload="auto";
+    v.addEventListener("playing",function(){ v.classList.add("on"); });
+    v.addEventListener("error",function(){ stopVideo(c); });
+    c.querySelector(".bin").insertBefore(v,c.querySelector(".bshade")); c.classList.add("pv");
+    var pr=v.play(); if(pr&&pr.catch) pr.catch(function(){ stopVideo(c); });
+  }
+  function play(i){                                      // 버튼으로 재생: 소리·컨트롤 있는 전체 재생
+    var it=items[i], c=cards[i], url=demoUrl(it); if(!url) return;
+    stopVideo(c);
+    var id=ytId(url), el;
+    if(id){ el=document.createElement("iframe"); el.src="https://www.youtube-nocookie.com/embed/"+id+"?autoplay=1&rel=0";
+      el.allow="autoplay; encrypted-media; picture-in-picture; fullscreen"; el.allowFullscreen=true; }
+    else { el=document.createElement("video"); el.className="bvid on"; el.src=url; el.controls=true; el.autoplay=true; el.playsInline=true; }
+    c.classList.add("full"); untilt(c);
+    c.querySelector(".bin").insertBefore(el,c.querySelector(".bshade"));
+  }
+
+  var POS=[ // 가운데에서 떨어진 정도 |d| 별 배치: x(%), z(px), 회전(deg), 크기, 투명도
+    {x:0,  z:0,    r:0,  s:1,    o:1},
+    {x:60, z:-140, r:36, s:.86,  o:.9},
+    {x:98, z:-300, r:44, s:.72,  o:.55}
+  ];
+  function layout(arrive){
+    var narrow=window.innerWidth<=760;
+    cards.forEach(function(c,i){
+      var d=i-cur, a=Math.abs(d), sgn=d<0?-1:1, p=POS[Math.min(a,2)];
+      var hidden=a>2 || (narrow && a>1);
+      var x=p.x*(narrow?.78:1)*sgn, r=-p.r*sgn;
+      c.style.transform="translateX("+x+"%) translateZ("+p.z+"px) rotateY("+r+"deg) scale("+p.s+")";
+      c.style.opacity=hidden?0:p.o; c.style.zIndex=String(10-a); c.style.pointerEvents=hidden?"none":"auto";
+      c.style.filter=a===0?"none":"brightness(.78) saturate(.9)";
+      var was=c.classList.contains("active"); c.classList.toggle("active",a===0);
+      c.setAttribute("aria-hidden",a===0?"false":"true");
+      if(a!==0){ stopVideo(c); untilt(c); c.classList.remove("arrive"); }
+      else if(arrive && !was && !reduce){ c.classList.remove("arrive"); void c.offsetWidth; c.classList.add("arrive"); }
+    });
+    [].forEach.call(dots.children,function(b,i){ if(i===cur) b.setAttribute("aria-current","true"); else b.removeAttribute("aria-current"); });
+    glow.style.setProperty("--gc",GLOW[items[cur].key]||"rgba(42,79,224,.30)");
+  }
+  function render(){
+    var it=items[cur];
+    var h='<div><h3>'+esc(it.name)+'<small>'+esc(it.sub)+'</small></h3><p class="bdesc">'+esc(it.desc)+'</p>'
+      +'<div class="stack">'+it.stack.map(function(t,k){return '<i style="--k:'+k+'">'+esc(t)+"</i>";}).join("")+'</div></div>'
+      +'<dl><dt>PERIOD</dt><dd>'+esc(it.when)+'<span class="sub">'+esc(it.team)+'</span></dd><dt>ROLE</dt><dd>'+it.role+'</dd></dl>'
+      +'<div class="blinks">'+it.links.map(function(l,k){return '<a class="lk" style="--k:'+k+'" href="'+esc(l.href)+'" target="_blank" rel="noopener">'+esc(l.text)+'</a>';}).join("")
+      +(demoUrl(it)?'<button type="button" class="lk demo" style="--k:'+it.links.length+'" id="binfo-demo">시연 영상</button>':'<button type="button" class="lk demo" disabled>영상 준비 중</button>')+'</div>';
+    info.innerHTML=h;
+    var b=document.getElementById("binfo-demo"); if(b) b.addEventListener("click",function(){ play(cur); });
+    info.classList.remove("enter"); void info.offsetWidth; info.classList.add("enter");
+  }
+  function go(i){
+    var n=items.length, to=(i+n)%n; if(to===cur) return;
+    var diff=((to-cur)+n)%n; var dir=diff>n/2?-1:1;       // 가까운 쪽 방향
+    clearTimeout(hoverTimer);
+    cur=to; layout(true); render();
+    if(!reduce && stage.animate){                          // 장면 전체가 넘기는 방향으로 살짝 기울었다 돌아온다
+      stage.animate([{transform:"rotateY(0deg) translateX(0)"},{transform:"rotateY("+(dir*-3.2)+"deg) translateX("+(dir*-14)+"px)",offset:.35},{transform:"rotateY(0deg) translateX(0)"}],
+        {duration:820,easing:"cubic-bezier(.22,1,.36,1)"});
+    }
+  }
+
+  document.getElementById("bprev").addEventListener("click",function(){ go(cur-1); });
+  document.getElementById("bnext").addEventListener("click",function(){ go(cur+1); });
+  stage.addEventListener("keydown",function(e){
+    if(e.key==="ArrowLeft"){ go(cur-1); e.preventDefault(); } else if(e.key==="ArrowRight"){ go(cur+1); e.preventDefault(); }
+  });
+  var sx=null;
+  stage.addEventListener("pointerdown",function(e){ if(e.target.closest("video,iframe,button")) return; sx=e.clientX; });
+  stage.addEventListener("pointerup",function(e){
+    if(sx===null) return; var dx=e.clientX-sx; sx=null;
+    if(Math.abs(dx)>40) go(cur+(dx<0?1:-1));
+  });
+  stage.addEventListener("pointercancel",function(){ sx=null; });
+  window.addEventListener("resize",function(){ layout(false); });
+  layout(false); render();
 })();
 </script>
 </body>
