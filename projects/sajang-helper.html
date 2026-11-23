@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>사장님 도우미 상세 | 이규찬 포트폴리오</title>
+<meta name="description" content="원가·장부·월 정산·지원금·리뷰를 휴대폰 한 곳에서 챙기는 자영업자 경영 도우미 웹 앱 사장님 도우미의 기능 상세">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="project.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="back" href="../index.html#projects">← 포트폴리오로</a>
+  <nav class="toc" aria-label="목차"><a href="#features">핵심 기능</a><a href="#rules">계산 규칙</a><a href="#security">보안·구조</a><a href="#stages">개발 단계</a><a href="#limits">한계</a></nav>
+</div></header>
+
+<main>
+<div class="wrap">
+  <header class="hero">
+    <span class="eyebrow">SOLO · 5일 · 1명</span>
+    <h1>사장님 도우미<small>Sajang Helper — 자영업자 경영 도우미 웹 앱</small></h1>
+    <p class="lead">폐업·빈 점포·빚 부담이 커지는데, 원가는 머릿속에, 명세서는 종이에, 지원금 정보는 블로그에 흩어져 있습니다. 한 번 입력하면 원가·남은 돈·지원금·리뷰 답글까지 자동으로 정리해 주는 모바일 웹 앱을 혼자 만들었습니다.</p>
+    <dl class="meta">
+      <div><dt>PERIOD</dt><dd>2026.11 · 5일</dd></div>
+      <div><dt>TEAM</dt><dd>1명 (이규찬)</dd></div>
+      <div><dt>MY ROLE</dt><dd>기획 · 설계 · 화면/서버/DB 구현 · 테스트 · 발표 자료</dd></div>
+    </dl>
+    <div class="stack"><i>Next.js 15 (App Router)</i><i>React 19</i><i>TypeScript</i><i>mysql2</i><i>MySQL 8.4</i><i>Docker Compose</i><i>vitest</i><i>Playwright</i></div>
+    <div class="btns">
+      <button class="btn primary" type="button" data-video="../videos/sajang-helper.mp4">시연 영상 보기</button>
+      <a class="btn" href="https://app.notion.com/p/414fb666c592815abb3cec3e44a8a2d7" target="_blank" rel="noopener">Notion 상세 ↗</a>
+      <a class="btn" href="https://github.com/guechanlee/sajang-helper" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-head rv"><span class="no">FLOW</span><h2>서비스 흐름</h2></div>
+    <div class="flow rv"><b>명세서·재고·매출 입력</b><span>→</span><b>재료 단가·메뉴 원가율 자동 계산</b><span>→</span><b>월 정산(남은 돈·경고)</b><span>→</span><b>질문 7개로 지원금 선별</b><span>→</span><b>리뷰 답글 초안</b></div>
+  </section>
+
+  <section id="features">
+    <div class="sec-head rv"><span class="no">01</span><h2>핵심 기능 — 하단 탭 4개</h2></div>
+    <p class="intro rv">화면마다 질문이나 행동 하나만 두고, 480px 모바일 한 줄 구성에 하단 탭 4개(홈·원가·장부·더보기)로 정리했습니다.</p>
+
+    <article class="feat rv">
+      <div>
+        <h3><em>홈</em>오늘 챙길 것만 모아서</h3>
+        <p>아직 안 한 것만 카드로 보여 주고, 다 했으면 아무것도 나오지 않습니다.</p>
+        <ul>
+          <li>오늘 할 일 카드 · 이번 달 남은 돈</li>
+          <li>원가율 높은 메뉴 TOP3와 "30%로 맞추려면 얼마" 안내</li>
+          <li>답글 안 단 리뷰 · 발주할 품목 · 다가오는 날짜(D-day)</li>
+        </ul>
+      </div>
+      <figure class="shot fx"><button type="button" data-cap="사장님 도우미 표지"><img src="../img/sajang-helper.svg" alt="사장님 도우미 표지" loading="lazy"></button><figcaption>서비스 표지</figcaption></figure>
+    </article>
+
+    <article class="feat rv noimg">
+      <div>
+        <h3><em>원가</em>재료값 → 메뉴 원가율 → 적정 판매가</h3>
+        <ul>
+          <li>재료 g당 단가 계산, 메뉴 등록·편집, 반제품 지원</li>
+          <li>원가율을 색으로 표시: 30% 이하 초록 · 38% 이하 노랑 · 초과 빨강</li>
+          <li>예시 데이터로 먼저 체험해 볼 수 있음</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="feat rv noimg">
+      <div>
+        <h3><em>장부</em>명세서 · 재고 · 월 정산</h3>
+        <ul>
+          <li>거래명세서 입력과 <b>가격 이상 경고</b></li>
+          <li>재고·발주서 작성 — 발주서를 복사하거나 문자로 보내기</li>
+          <li>월 정산: 매출과 비용을 넣으면 남은 돈과 경고가 나옴, 거래처별 매입 집계</li>
+          <li>정산표 내려받기</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="feat rv noimg">
+      <div>
+        <h3><em>더보기</em>지원금 · 리뷰 · 날짜 알림</h3>
+        <ul>
+          <li><b>지원금 찾기</b>: 질문 7개에 답하면 약 25개 제도 중 해당하는 것을 부합도(추정)와 함께 보여 주고, 신청 순서까지 정리</li>
+          <li><b>리뷰 답글 초안</b>: 직접 기록한 리뷰에 별점 구간(4~5점 · 3점 · 1~2점)별 초안 2개를 가게 이름·작성자 이름으로 생성해 복사, 스마트플레이스에 붙여 넣어 등록</li>
+          <li>답글 완료는 사장님이 직접 표시, 신청·납부 날짜 알림, 내 데이터 내려받기·삭제</li>
+        </ul>
+      </div>
+    </article>
+  </section>
+
+  <section id="rules">
+    <div class="sec-head rv"><span class="no">02</span><h2>계산 · 판정 규칙</h2></div>
+    <div class="cards">
+      <div class="card rv"><h4>g당 단가</h4><p>포장 가격 ÷ (포장 무게 × (1 − 버리는 비율 ÷ 100))</p></div>
+      <div class="card rv"><h4>원가율 색</h4><p>30% 이하 초록 · 38% 이하 노랑 · 초과 빨강</p></div>
+      <div class="card rv"><h4>적정 판매가</h4><p>원가 ÷ 0.30 을 100원 단위로 올림</p></div>
+    </div>
+    <p class="note rv">계산·판정 규칙은 14가지로 정리해 기능 명세서에 화면 ID별 입력·처리·출력·예외와 함께 적었습니다.</p>
+  </section>
+
+  <section id="security">
+    <div class="sec-head rv"><span class="no">03</span><h2>보안 · 구조</h2></div>
+    <p class="intro rv">브라우저는 앱 서버를 거쳐서만 데이터베이스에 접근합니다. 브라우저 → Next.js 서버 라우트(<code>/api/auth</code> · <code>/api/db</code> · <code>/api/rpc</code>) → MySQL 8.4.</p>
+    <div class="tw rv"><table>
+      <thead><tr><th>구분</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>인증</td><td>비밀번호 scrypt 해시, 세션 쿠키 30일, 같은 IP·이메일 5회 실패 시 15분 제한</td></tr>
+        <tr><td>접근 제어</td><td>허용된 표·열만, <b>내 가게 데이터만</b>, id·store_id·시각은 서버 전용 (값은 항상 <code>?</code>로 바인딩)</td></tr>
+        <tr><td>외부 연동</td><td>스마트플레이스 주소는 naver.com·naver.me만 허용, 네이버 로그인 정보는 수집하지 않음</td></tr>
+        <tr><td>실행</td><td>Docker Compose(app + mysql), 데이터는 볼륨에 보관</td></tr>
+        <tr><td>규모</td><td>API 5개(인증 3 · 데이터 1 · 함수 1), DB 표 14개, 단위·DB 테스트 67개 통과</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="stages">
+    <div class="sec-head rv"><span class="no">04</span><h2>5일 개발 단계</h2></div>
+    <div class="tw rv"><table>
+      <thead><tr><th>단계</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>MySQL 전환 · 로그인 (Supabase에서 이전, 세션, Docker 구성)</td></tr>
+        <tr><td>2</td><td>원가 · 장부 · 정산 (원가 계산, 명세서, 재고·발주, 월 정산, 경고·내려받기)</td></tr>
+        <tr><td>3</td><td>지원금 매칭 (약 25개 제도, 질문 7개, 부합도 추정, 날짜 알림)</td></tr>
+        <tr><td>4</td><td>가게 등록 · 리뷰 (가게 정보, 스마트플레이스 주소, 리뷰 기록, 답글 초안)</td></tr>
+        <tr><td>5</td><td>4탭 정리 · 전체 점검 (탭 8개 → 4개, 모든 화면 점검)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="cards" style="margin-top:18px">
+      <div class="card rv"><h4>화면 점검</h4><p>홈·원가·장부·더보기의 모든 버튼·입력·이동·삭제·내려받기·저장 후 새로고침 확인.</p></div>
+      <div class="card rv"><h4>더미 데이터 검증</h4><p>리뷰 70개 · 명세서 45건 · 재료 60개로 검색·더 보기 확인.</p></div>
+    </div>
+  </section>
+
+  <section id="limits">
+    <div class="sec-head rv"><span class="no">05</span><h2>한계 · 향후 계획</h2></div>
+    <div class="tw rv"><table>
+      <thead><tr><th>현재 미구현</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>입력·화면</td><td>거래명세서 수정(현재는 삭제 후 재입력), 금액 천 단위 쉼표, 재고 "개" 단위</td></tr>
+        <tr><td>운영</td><td>비밀번호 재설정 메일, 자동 백업, 외부 공개 호스팅</td></tr>
+        <tr><td>데이터</td><td>지원금 금액·조건을 공식 공고 기준으로 정기 갱신 (현재는 블로그·뉴스 요약 기반)</td></tr>
+        <tr><td>확장</td><td>명세서 사진 인식, 네이버가 공식 연동을 열면 리뷰 자동 수집</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note rv">지원금 금액·조건은 신청 전 공식 공고로 확인해야 하고, 부합도(%)는 추정치입니다.</p>
+  </section>
+
+  <div class="next">
+    <div class="sec-head"><span class="no">MORE</span><h2>다른 프로젝트</h2></div>
+    <div class="cards">
+      <a class="card" href="white-eyes.html"><small>TEAM · 7주</small><h4>White-eyes</h4><p>구역별 인구 밀집도 관제 서비스 — 구역·캠·다시보기·지도 담당</p></a>
+      <a class="card" href="obsidian-shield.html"><small>TEAM · 4주</small><h4>Obsidian Shield</h4><p>실시간 신원 탐지 관제 시스템 — 회원 서비스 담당</p></a>
+    </div>
+  </div>
+</div>
+</main>
+<footer><div class="wrap">© 2026 이규찬 · <a href="../index.html">guechanlee.github.io</a></div></footer>
+
+<dialog id="lb" aria-label="이미지 확대"><div class="h"><span class="cap"></span><button type="button" aria-label="닫기">✕</button></div><img alt=""></dialog>
+<dialog id="demo" aria-label="시연 영상"><div class="h"><span>사장님 도우미 · 시연 영상</span><button type="button" aria-label="닫기">✕</button></div><div class="vbody"></div></dialog>
+<script src="project.js"></script>
+</body>
+</html>

@@ -777,6 +777,7 @@ footer::before{content:"";position:absolute;left:50%;bottom:-260px;width:900px;h
               <td data-label="기간 · 팀"><span class="when">2026.10.06 ~ 11.23</span><span class="team">7주 · 팀 6명</span></td>
               <td data-label="내 역할">구역·캠 관리, 실시간 화면·다시보기, 대시보드 지도 <span class="sub">Spring 관리자 앱</span></td>
               <td class="plinks" data-label="링크">
+                <a class="lk" href="projects/white-eyes.html">상세 기능</a>
                 <a class="lk" href="https://app.notion.com/p/40efb666c59280e0b7f3edd25c72c2d3" target="_blank" rel="noopener">Notion</a>
                 <a class="lk" href="https://github.com/white-eyes1" target="_blank" rel="noopener">GitHub</a>
                 <button class="lk demo" type="button" data-demo="white-eyes">시연 영상</button>
@@ -797,6 +798,7 @@ footer::before{content:"";position:absolute;left:50%;bottom:-260px;width:900px;h
               <td data-label="기간 · 팀"><span class="when">2026.06.25 ~ 07.24</span><span class="team">4주 · 팀 5명</span></td>
               <td data-label="내 역할">회원 서비스 — 회원·계정 관리, 입력 검증, 권한 구조</td>
               <td class="plinks" data-label="링크">
+                <a class="lk" href="projects/obsidian-shield.html">상세 기능</a>
                 <a class="lk" href="https://app.notion.com/p/407fb666c59281abb6e9efdfbce1e66a" target="_blank" rel="noopener">Notion</a>
                 <a class="lk" href="https://github.com/Kanabig/obsidian-shield" target="_blank" rel="noopener">GitHub</a>
                 <button class="lk demo" type="button" data-demo="obsidian-shield">시연 영상</button>
@@ -817,6 +819,7 @@ footer::before{content:"";position:absolute;left:50%;bottom:-260px;width:900px;h
               <td data-label="기간 · 팀"><span class="when">2026.11</span><span class="team">5일 · 1인</span></td>
               <td data-label="내 역할">기획·설계, 화면·서버·DB 구현, 테스트, 발표 자료까지 전 과정</td>
               <td class="plinks" data-label="링크">
+                <a class="lk" href="projects/sajang-helper.html">상세 기능</a>
                 <a class="lk" href="https://app.notion.com/p/414fb666c592815abb3cec3e44a8a2d7" target="_blank" rel="noopener">Notion</a>
                 <a class="lk" href="https://github.com/guechanlee/sajang-helper" target="_blank" rel="noopener">GitHub</a>
                 <button class="lk demo" type="button" data-demo="sajang-helper">시연 영상</button>
@@ -1187,7 +1190,7 @@ var DEMOS = {
     var h='<div><h3>'+esc(it.name)+'<small>'+esc(it.sub)+'</small></h3><p class="bdesc">'+esc(it.desc)+'</p>'
       +'<div class="stack">'+it.stack.map(function(t,k){return '<i style="--k:'+k+'">'+esc(t)+"</i>";}).join("")+'</div></div>'
       +'<dl><dt>PERIOD</dt><dd>'+esc(it.when)+'<span class="sub">'+esc(it.team)+'</span></dd><dt>ROLE</dt><dd>'+it.role+'</dd></dl>'
-      +'<div class="blinks">'+it.links.map(function(l,k){return '<a class="lk" style="--k:'+k+'" href="'+esc(l.href)+'" target="_blank" rel="noopener">'+esc(l.text)+'</a>';}).join("")
+      +'<div class="blinks">'+it.links.map(function(l,k){return '<a class="lk" style="--k:'+k+'" href="'+esc(l.href)+'"'+(/\/projects\//.test(l.href)?'':' target="_blank" rel="noopener"')+'>'+esc(l.text)+'</a>';}).join("")
       +(demoUrl(it)?'<button type="button" class="lk demo" style="--k:'+it.links.length+'" id="binfo-demo">시연 영상</button>':'<button type="button" class="lk demo" disabled>영상 준비 중</button>')+'</div>';
     info.innerHTML=h;
     var b=document.getElementById("binfo-demo"); if(b) b.addEventListener("click",function(){ play(cur); });
