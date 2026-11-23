@@ -622,6 +622,13 @@ footer::before{content:"";position:absolute;left:50%;bottom:-260px;width:900px;h
   box-shadow:0 6px 20px -6px rgba(0,0,0,.5);transition:transform .2s var(--ease),background .2s}
 .bcard .bplay::before{content:"";border-left:9px solid currentColor;border-top:6px solid transparent;border-bottom:6px solid transparent}
 .bcard .bplay:hover{transform:translateY(-1px);background:var(--accent);color:#fff}
+.bcard .bdetail{position:absolute;right:14px;top:12px;z-index:3;height:38px;padding:0 16px;border-radius:999px;display:inline-flex;align-items:center;font-size:13.5px;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 8px 22px -8px rgba(40,50,200,.7);transition:transform .2s var(--ease),filter .2s}
+.bcard .bdetail:hover{transform:translateY(-2px);filter:brightness(1.1)}
+.bcard:not(.active) .bdetail{display:none}
+.bcard.pv .bdetail,.bcard.full .bdetail{display:none}
+.lk.hot{background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent;color:#fff}
+.lk.hot:hover{filter:brightness(1.1);color:#fff;border-color:transparent}
 .bcard .bsoon{position:absolute;right:16px;bottom:16px;font-size:12.5px;color:#fff;background:rgba(8,9,12,.6);
   border:1px dashed rgba(255,255,255,.4);padding:5px 12px;border-radius:999px}
 .bcard .bhint{position:absolute;right:14px;top:12px;font-size:12px;color:#fff;background:rgba(8,9,12,.6);padding:4px 12px;border-radius:999px;
@@ -777,7 +784,7 @@ footer::before{content:"";position:absolute;left:50%;bottom:-260px;width:900px;h
               <td data-label="기간 · 팀"><span class="when">2026.10.06 ~ 11.23</span><span class="team">7주 · 팀 6명</span></td>
               <td data-label="내 역할">구역·캠 관리, 실시간 화면·다시보기, 대시보드 지도 <span class="sub">Spring 관리자 앱</span></td>
               <td class="plinks" data-label="링크">
-                <a class="lk" href="projects/white-eyes.html">상세 기능</a>
+                <a class="lk" href="projects/white-eyes.html">프로젝트 상세보기</a>
                 <a class="lk" href="https://app.notion.com/p/40efb666c59280e0b7f3edd25c72c2d3" target="_blank" rel="noopener">Notion</a>
                 <a class="lk" href="https://github.com/white-eyes1" target="_blank" rel="noopener">GitHub</a>
                 <button class="lk demo" type="button" data-demo="white-eyes">시연 영상</button>
@@ -798,7 +805,7 @@ footer::before{content:"";position:absolute;left:50%;bottom:-260px;width:900px;h
               <td data-label="기간 · 팀"><span class="when">2026.06.25 ~ 07.24</span><span class="team">4주 · 팀 5명</span></td>
               <td data-label="내 역할">회원 서비스 — 회원·계정 관리, 입력 검증, 권한 구조</td>
               <td class="plinks" data-label="링크">
-                <a class="lk" href="projects/obsidian-shield.html">상세 기능</a>
+                <a class="lk" href="projects/obsidian-shield.html">프로젝트 상세보기</a>
                 <a class="lk" href="https://app.notion.com/p/407fb666c59281abb6e9efdfbce1e66a" target="_blank" rel="noopener">Notion</a>
                 <a class="lk" href="https://github.com/Kanabig/obsidian-shield" target="_blank" rel="noopener">GitHub</a>
                 <button class="lk demo" type="button" data-demo="obsidian-shield">시연 영상</button>
@@ -819,7 +826,7 @@ footer::before{content:"";position:absolute;left:50%;bottom:-260px;width:900px;h
               <td data-label="기간 · 팀"><span class="when">2026.11</span><span class="team">5일 · 1인</span></td>
               <td data-label="내 역할">기획·설계, 화면·서버·DB 구현, 테스트, 발표 자료까지 전 과정</td>
               <td class="plinks" data-label="링크">
-                <a class="lk" href="projects/sajang-helper.html">상세 기능</a>
+                <a class="lk" href="projects/sajang-helper.html">프로젝트 상세보기</a>
                 <a class="lk" href="https://app.notion.com/p/414fb666c592815abb3cec3e44a8a2d7" target="_blank" rel="noopener">Notion</a>
                 <a class="lk" href="https://github.com/guechanlee/sajang-helper" target="_blank" rel="noopener">GitHub</a>
                 <button class="lk demo" type="button" data-demo="sajang-helper">시연 영상</button>
@@ -1097,7 +1104,8 @@ var DEMOS = {
       stack: [].map.call(tr.querySelectorAll(".pmain .stack i"),function(e){return e.textContent;}),
       when: (tr.querySelector(".when")||{}).textContent||"", team:(tr.querySelector(".team")||{}).textContent||"",
       role: role?role.innerHTML:"",
-      links: [].map.call(tr.querySelectorAll(".plinks a"),function(a){return {href:a.href,text:a.textContent};})
+      links: [].map.call(tr.querySelectorAll(".plinks a"),function(a){return {href:a.href,text:a.textContent};}),
+      detail: (function(a){return a?a.getAttribute("href"):"";})(tr.querySelector('.plinks a[href*="projects/"]'))
     };
   });
   function demoUrl(it){ return ((window.DEMOS||{})[it.key]||"").trim(); }
@@ -1110,6 +1118,7 @@ var DEMOS = {
     c.innerHTML='<div class="bin"><img src="'+esc(it.img)+'" alt="'+esc(it.alt)+'" draggable="false">'
       +'<span class="bshade"></span><span class="bno">'+String(i+1).padStart(2,"0")+'</span><span class="bname">'+esc(it.name)+'</span>'
       +'<span class="bhint">미리보기 · 클릭하면 소리 켜기</span>'
+      +(it.detail?'<a class="bdetail" href="'+esc(it.detail)+'">프로젝트 상세보기 →</a>':'')
       +(demoUrl(it)?'<button type="button" class="bplay">시연 영상 재생</button>':'<span class="bsoon">영상 준비 중</span>')
       +'<span class="shine"></span></div>';
     c.addEventListener("click",function(){
@@ -1117,6 +1126,7 @@ var DEMOS = {
       var v=c.querySelector("video.bvid");               // 미리보기 중이면 클릭으로 소리 켜기/끄기
       if(v && c.classList.contains("pv")){ v.muted=!v.muted; c.querySelector(".bhint").textContent=v.muted?"미리보기 · 클릭하면 소리 켜기":"소리 켜짐 · 다시 클릭하면 끔"; }
     });
+    var dt=c.querySelector(".bdetail"); if(dt) dt.addEventListener("click",function(e){ e.stopPropagation(); });
     var pb=c.querySelector(".bplay"); if(pb) pb.addEventListener("click",function(e){ e.stopPropagation(); play(i); });
     c.addEventListener("pointerenter",function(e){ if(e.pointerType==="mouse") schedulePreview(i); });
     c.addEventListener("pointermove",function(e){ if(e.pointerType==="mouse"){ tilt(c,e); if(i===cur) schedulePreview(i); } });
@@ -1190,7 +1200,7 @@ var DEMOS = {
     var h='<div><h3>'+esc(it.name)+'<small>'+esc(it.sub)+'</small></h3><p class="bdesc">'+esc(it.desc)+'</p>'
       +'<div class="stack">'+it.stack.map(function(t,k){return '<i style="--k:'+k+'">'+esc(t)+"</i>";}).join("")+'</div></div>'
       +'<dl><dt>PERIOD</dt><dd>'+esc(it.when)+'<span class="sub">'+esc(it.team)+'</span></dd><dt>ROLE</dt><dd>'+it.role+'</dd></dl>'
-      +'<div class="blinks">'+it.links.map(function(l,k){return '<a class="lk" style="--k:'+k+'" href="'+esc(l.href)+'"'+(/\/projects\//.test(l.href)?'':' target="_blank" rel="noopener"')+'>'+esc(l.text)+'</a>';}).join("")
+      +'<div class="blinks">'+it.links.map(function(l,k){return '<a class="lk'+(/\/projects\//.test(l.href)?' hot':'')+'" style="--k:'+k+'" href="'+esc(l.href)+'"'+(/\/projects\//.test(l.href)?'':' target="_blank" rel="noopener"')+'>'+esc(l.text)+'</a>';}).join("")
       +(demoUrl(it)?'<button type="button" class="lk demo" style="--k:'+it.links.length+'" id="binfo-demo">시연 영상</button>':'<button type="button" class="lk demo" disabled>영상 준비 중</button>')+'</div>';
     info.innerHTML=h;
     var b=document.getElementById("binfo-demo"); if(b) b.addEventListener("click",function(){ play(cur); });
